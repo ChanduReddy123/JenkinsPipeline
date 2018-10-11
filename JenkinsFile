@@ -13,6 +13,8 @@ pipeline{
                 #!/bin/sh
                 cd MySampleJava/SpringMVCSecurityXML/
                 mvn clean package
+                cd target/
+                ls
                 '''
             }
         }
