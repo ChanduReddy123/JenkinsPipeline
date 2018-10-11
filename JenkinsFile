@@ -1,12 +1,16 @@
 pipeline{
-    agent any
+    agent {
+    label 'jenkins_agent1'
+    }
     stages{
         stage('one'){
             steps{
+                git(
+                       url: 'https://github.com/ChanduReddy123/MySampleJava.git',
+                       branch: "master"
+                     )
                 sh '''
                 #!/bin/sh
-                rm -rf MySampleJava
-                git clone https://github.com/ChanduReddy123/MySampleJava.git/
                 cd MySampleJava/SpringMVCSecurityXML/
                 mvn clean package
                 '''
@@ -15,7 +19,7 @@ pipeline{
         stage('two')
         {
             steps{
-                input('Hey build completed would you like to continue')
+                input('Hey build completed would you like to continue...')
             }
         }
         stage('three')
@@ -29,33 +33,26 @@ pipeline{
             parallel{
                 stage('p1')
                 {
-                    steps{
-                        sh'''
-                        #!/bin/sh
-                        mkdir p1
-                        cd p1
-                        git clone https://github.com/ChanduReddy123/MySampleJava.git/
-                        cd MySampleJava/SpringMVCSecurityXML/
-                        mvn clean package
-                        '''
-                    }
+		            steps{
+		                git(
+		                       url: 'https://github.com/ChanduReddy123/MySampleJava.git',
+		                       branch: "master"
+		                     )
+		                sh '''
+		                #!/bin/sh
+		                cd MySampleJava/SpringMVCSecurityXML/
+		                mvn clean package
+		                '''
+		            }
                 }
                 stage('p2')
                 {
                     steps{
-                     sh'''
-                        #!/bin/sh
-                        mkdir p2
-                        cd p2
-                        git clone https://github.com/ChanduReddy123/MySampleJava.git/
-                        cd MySampleJava/SpringMVCSecurityXML/
-                        mvn clean package
-                        '''
+                        build 'testing'
                     }
                 }
             }
         }
-        
+
     }
 }
-
