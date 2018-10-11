@@ -1,0 +1,61 @@
+pipeline{
+    agent any
+    stages{
+        stage('one'){
+            steps{
+                sh '''
+                #!/bin/sh
+                rm -rf MySampleJava
+                git clone https://github.com/ChanduReddy123/MySampleJava.git/
+                cd MySampleJava/SpringMVCSecurityXML/
+                mvn clean package
+                '''
+            }
+        }
+        stage('two')
+        {
+            steps{
+                input('Hey build completed would you like to continue')
+            }
+        }
+        stage('three')
+        {
+            steps{
+                echo 'yoo this is done '
+            }
+        }
+        stage('tada')
+        {
+            parallel{
+                stage('p1')
+                {
+                    steps{
+                        sh'''
+                        #!/bin/sh
+                        mkdir p1
+                        cd p1
+                        git clone https://github.com/ChanduReddy123/MySampleJava.git/
+                        cd MySampleJava/SpringMVCSecurityXML/
+                        mvn clean package
+                        '''
+                    }
+                }
+                stage('p2')
+                {
+                    steps{
+                     sh'''
+                        #!/bin/sh
+                        mkdir p2
+                        cd p2
+                        git clone https://github.com/ChanduReddy123/MySampleJava.git/
+                        cd MySampleJava/SpringMVCSecurityXML/
+                        mvn clean package
+                        '''
+                    }
+                }
+            }
+        }
+        
+    }
+}
+
