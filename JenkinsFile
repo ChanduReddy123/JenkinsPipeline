@@ -19,7 +19,7 @@ pipeline{
         stage('two')
         {
             steps{
-                input('Hey build completed would you like to continue...')
+                input('Hey build completed would you like to continue....')
             }
         }
         stage('three')
